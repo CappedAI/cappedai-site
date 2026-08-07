@@ -3,1258 +3,974 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>CappedAI — Your AI. On a Drive.</title>
-  <meta name="description" content="Private, portable AI that lives on a USB drive. No internet. No cloud. No account. Download models from HuggingFace, install knowledge packs, generate images — all offline.">
-  <meta property="og:title" content="CappedAI — Your AI. On a Drive.">
-  <meta property="og:description" content="Private, portable AI. No internet required. Your models, your data, your drive.">
+  <title>CappedAI — Private AI. No Cloud. Your Choice.</title>
+  <meta name="description" content="CappedAI runs open-source AI privately on your phone or drive. No internet required, no subscription, no server that sees your data. Knowledge packs with live data that becomes permanent local knowledge.">
+  <meta property="og:title" content="CappedAI — Private AI. No Cloud. Your Choice.">
+  <meta property="og:description" content="Open-source AI on your phone or drive. Offline by default. Knowledge packs that accumulate live data into permanent local knowledge.">
   <meta property="og:type" content="website">
   <style>
-    /* ── Reset ───────────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
-    /* ── Tokens ──────────────────────────────────────────────────── */
     :root {
-      --navy:      #0D1B2A;
-      --navy-mid:  #112236;
-      --navy-card: #0F2133;
-      --blue:      #1E88E5;
-      --blue-dim:  #1565C0;
-      --green:     #10B981;
-      --amber:     #F59E0B;
-      --white:     #F0F4F8;
-      --white-dim: #8FA8C0;
-      --border:    rgba(30,136,229,0.18);
-      --glow:      rgba(30,136,229,0.12);
-
-      --font-display: 'Georgia', 'Times New Roman', serif;
-      --font-body:    system-ui, -apple-system, 'Segoe UI', sans-serif;
-      --font-mono:    'SF Mono', 'Fira Code', 'Consolas', monospace;
-
-      --max: 1080px;
-      --pad: clamp(20px, 5vw, 60px);
+      --navy:        #0D1B2A;
+      --navy-mid:    #0F2236;
+      --navy-card:   #112540;
+      --blue:        #1E88E5;
+      --blue-dim:    #1565C0;
+      --blue-pale:   rgba(30,136,229,0.12);
+      --green:       #10B981;
+      --green-pale:  rgba(16,185,129,0.12);
+      --amber:       #F59E0B;
+      --amber-pale:  rgba(245,158,11,0.12);
+      --purple:      #8B5CF6;
+      --purple-pale: rgba(139,92,246,0.12);
+      --teal:        #06B6D4;
+      --teal-pale:   rgba(6,182,212,0.12);
+      --white:       #EFF4FA;
+      --white-dim:   #7A99B8;
+      --border:      rgba(30,136,229,0.16);
+      --max:         1060px;
+      --pad:         clamp(20px, 5vw, 56px);
+      --font-serif:  'Georgia', 'Times New Roman', serif;
+      --font-sans:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:   'SF Mono', 'Fira Code', 'Consolas', monospace;
     }
 
-    /* ── Base ────────────────────────────────────────────────────── */
     body {
-      background: var(--navy);
-      color: var(--white);
-      font-family: var(--font-body);
-      font-size: 17px;
-      line-height: 1.65;
-      -webkit-font-smoothing: antialiased;
+      background: var(--navy); color: var(--white);
+      font-family: var(--font-sans); font-size: 17px;
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
     }
 
-    a { color: var(--blue); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+    section { padding: clamp(72px, 9vw, 128px) 0; }
 
-    img { display: block; max-width: 100%; }
-
-    /* ── Layout helpers ──────────────────────────────────────────── */
-    .container {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-    }
-
-    section { padding: clamp(60px, 8vw, 120px) 0; }
-
-    /* ── Nav ─────────────────────────────────────────────────────── */
+    /* ── Nav ── */
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(13,27,42,0.92);
-      backdrop-filter: blur(12px);
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,27,42,0.94); backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
-
     .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--pad);
+      height: 58px; display: flex; align-items: center; justify-content: space-between;
     }
-
-    .nav-logo {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: normal;
-      color: var(--white);
-      letter-spacing: -0.02em;
-    }
-
-    .nav-logo span { color: var(--blue); }
-
+    .nav-logo { font-family: var(--font-serif); font-size: 19px; color: var(--white); letter-spacing: -0.02em; }
+    .nav-logo em { font-style: normal; color: var(--blue); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-link { font-size: 14px; color: var(--white-dim); text-decoration: none; transition: color 0.2s; }
+    .nav-link:hover { color: var(--white); }
     .nav-cta {
-      background: var(--blue);
-      color: #fff;
-      padding: 8px 18px;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 600;
-      transition: background 0.2s;
+      background: var(--blue); color: #fff; padding: 7px 16px;
+      border-radius: 4px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: background 0.2s;
     }
+    .nav-cta:hover { background: var(--blue-dim); }
 
-    .nav-cta:hover { background: var(--blue-dim); text-decoration: none; }
-
-    /* ── Hero ────────────────────────────────────────────────────── */
+    /* ── Hero ── */
     .hero {
-      min-height: 92vh;
-      display: flex;
-      align-items: center;
-      padding: clamp(80px, 12vw, 160px) 0 clamp(60px, 8vw, 100px);
-      position: relative;
-      overflow: hidden;
+      min-height: 88vh; display: flex; align-items: center;
+      padding: clamp(80px, 12vw, 140px) 0 clamp(60px, 8vw, 100px);
+      position: relative; overflow: hidden;
     }
-
-    /* Subtle grid background */
     .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(30,136,229,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(30,136,229,0.04) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+        linear-gradient(rgba(30,136,229,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,136,229,0.035) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%);
     }
-
-    /* Blue glow at top */
     .hero::after {
-      content: '';
-      position: absolute;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(30,136,229,0.15) 0%, transparent 70%);
+      content: ''; position: absolute; top: -80px; left: 50%;
+      transform: translateX(-50%); width: 800px; height: 500px;
+      background: radial-gradient(ellipse, rgba(30,136,229,0.13) 0%, transparent 68%);
       pointer-events: none;
     }
+    .hero-inner { position: relative; z-index: 1; max-width: 780px; }
 
-    .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 28px;
     }
+    .eyebrow::before { content: ''; display: block; width: 20px; height: 1px; background: var(--blue); }
 
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 28px;
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(40px, 6.5vw, 74px); font-weight: normal;
+      line-height: 1.07; letter-spacing: -0.03em; color: var(--white); margin-bottom: 28px;
     }
-
-    .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--blue);
-    }
-
-    .hero h1 {
-      font-family: var(--font-display);
-      font-size: clamp(42px, 6.5vw, 76px);
-      font-weight: normal;
-      line-height: 1.08;
-      letter-spacing: -0.03em;
-      color: var(--white);
-      margin-bottom: 28px;
-    }
-
-    .hero h1 em {
-      font-style: normal;
-      color: var(--blue);
-    }
+    h1 em { font-style: normal; color: var(--blue); }
 
     .hero-sub {
-      font-size: clamp(17px, 2vw, 20px);
-      color: var(--white-dim);
-      max-width: 560px;
-      margin-bottom: 48px;
-      line-height: 1.6;
+      font-size: clamp(17px, 2vw, 20px); color: var(--white-dim);
+      max-width: 580px; margin-bottom: 14px; line-height: 1.6;
+    }
+    .hero-sub-2 {
+      font-size: 15px; color: var(--white-dim);
+      max-width: 560px; margin-bottom: 44px; line-height: 1.6;
+    }
+    .hero-sub-2 strong { color: var(--white); }
+
+    .testflight-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-bottom: 20px; }
+    .tf-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--blue); color: #fff; padding: 13px 22px;
+      border-radius: 6px; font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .tf-btn:hover { background: var(--blue-dim); }
+    .tf-label { font-size: 12px; font-weight: 400; opacity: 0.85; display: block; margin-top: 1px; }
+    .drive-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: transparent; color: var(--amber);
+      border: 1px solid rgba(245,158,11,0.4); padding: 13px 22px;
+      border-radius: 6px; font-size: 15px; font-weight: 700;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .drive-btn:hover { background: var(--amber-pale); border-color: var(--amber); }
+    .coming-soon-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.04); color: var(--white-dim);
+      border: 1px solid rgba(255,255,255,0.1); padding: 13px 22px;
+      border-radius: 6px; font-size: 15px; font-weight: 600;
+      cursor: default; position: relative;
+    }
+    .coming-soon-btn .cs-badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; background: rgba(30,136,229,0.2);
+      color: var(--blue); padding: 2px 7px; border-radius: 3px;
+    }
+    .cta-coming-soon {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.04); color: var(--white-dim);
+      border: 1px solid rgba(255,255,255,0.1); padding: 14px 28px;
+      border-radius: 6px; font-size: 16px; font-weight: 600;
+      cursor: default;
+    }
+    .cta-coming-soon .cs-badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; background: rgba(30,136,229,0.2);
+      color: var(--blue); padding: 2px 7px; border-radius: 3px;
     }
 
-    /* ── Email form ──────────────────────────────────────────────── */
-    .email-form {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      max-width: 480px;
-    }
-
+    .email-form { display: flex; gap: 10px; flex-wrap: wrap; max-width: 460px; }
     .email-form input[type="email"] {
-      flex: 1;
-      min-width: 200px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 13px 16px;
-      color: var(--white);
-      font-size: 15px;
-      font-family: var(--font-body);
-      outline: none;
-      transition: border-color 0.2s;
+      flex: 1; min-width: 200px; background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 12px 16px; color: var(--white); font-size: 15px;
+      font-family: var(--font-sans); outline: none; transition: border-color 0.2s;
     }
-
     .email-form input[type="email"]::placeholder { color: var(--white-dim); }
     .email-form input[type="email"]:focus { border-color: var(--blue); }
-
     .email-form button {
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 13px 24px;
-      font-size: 15px;
-      font-weight: 700;
-      font-family: var(--font-body);
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
-
-    .email-form button:hover { background: var(--blue-dim); }
-
-    .form-note {
-      margin-top: 12px;
-      font-size: 13px;
-      color: var(--white-dim);
-    }
-
-    /* ── Demo strip ──────────────────────────────────────────────── */
-    .demo-strip {
-      margin-top: 64px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .demo-label {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--white-dim);
-    }
-
-    .demo-step {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: var(--white);
-    }
-
-    .demo-step .icon {
-      width: 28px;
-      height: 28px;
-      background: var(--glow);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-    }
-
-    .demo-arrow {
-      color: var(--border);
-      font-size: 18px;
-      margin: 0 2px;
-    }
-
-    /* ── Offline proof ───────────────────────────────────────────── */
-    .proof-bar {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 48px;
-    }
-
-    .proof-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      flex-shrink: 0;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    .proof-text {
-      font-size: 14px;
-      color: var(--white-dim);
-    }
-
-    .proof-text strong { color: var(--white); }
-
-    /* ── Three pillars ───────────────────────────────────────────── */
-    .pillars { background: var(--navy-mid); }
-
-    .pillars-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2px;
-    }
-
-    .pillar {
-      background: var(--navy-card);
-      padding: 48px 36px;
-      position: relative;
-    }
-
-    .pillar:first-child { border-radius: 8px 0 0 8px; }
-    .pillar:last-child  { border-radius: 0 8px 8px 0; }
-
-    .pillar-num {
-      font-family: var(--font-display);
-      font-size: 72px;
-      font-weight: normal;
-      color: rgba(30,136,229,0.08);
-      line-height: 1;
-      position: absolute;
-      top: 24px;
-      right: 28px;
-      letter-spacing: -0.04em;
-    }
-
-    .pillar-icon {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .pillar h3 {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: normal;
-      color: var(--white);
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .pillar p {
-      font-size: 15px;
-      color: var(--white-dim);
-      line-height: 1.65;
-    }
-
-    .pillar-tag {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--blue);
-      padding: 4px 10px;
-      border: 1px solid rgba(30,136,229,0.3);
-      border-radius: 3px;
-    }
-
-    /* ── Features ────────────────────────────────────────────────── */
-    .features-header {
-      text-align: center;
-      max-width: 600px;
-      margin: 0 auto 72px;
-    }
-
-    .section-eyebrow {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--blue);
-      margin-bottom: 16px;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 4vw, 42px);
-      font-weight: normal;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
-      color: var(--white);
-      margin-bottom: 16px;
-    }
-
-    .section-sub {
-      font-size: 17px;
-      color: var(--white-dim);
-      line-height: 1.6;
-    }
-
-    .features-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .feature-card {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 32px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .feature-card:hover {
-      border-color: rgba(30,136,229,0.4);
-      transform: translateY(-2px);
-    }
-
-    .feature-icon {
-      font-size: 24px;
-      margin-bottom: 16px;
-    }
-
-    .feature-card h4 {
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 8px;
-    }
-
-    .feature-card p {
-      font-size: 14px;
-      color: var(--white-dim);
-      line-height: 1.6;
-    }
-
-    /* ── Model library section ───────────────────────────────────── */
-    .model-section { background: var(--navy-mid); }
-
-    .model-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    @media (max-width: 720px) {
-      .model-layout { grid-template-columns: 1fr; gap: 48px; }
-    }
-
-    .model-copy h2 {
-      font-family: var(--font-display);
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: normal;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
-      color: var(--white);
-      margin-bottom: 20px;
-    }
-
-    .model-copy p {
-      font-size: 16px;
-      color: var(--white-dim);
-      line-height: 1.65;
-      margin-bottom: 16px;
-    }
-
-    .model-copy p:last-of-type { margin-bottom: 0; }
-
-    /* Model browser mockup */
-    .model-browser {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .browser-bar {
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .browser-dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .browser-dots span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.12);
-    }
-
-    .browser-title {
-      font-size: 12px;
-      color: var(--white-dim);
-      font-family: var(--font-mono);
-    }
-
-    .browser-body { padding: 20px; }
-
-    .search-bar {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--white-dim);
-      font-family: var(--font-mono);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .model-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .model-row:last-child { border-bottom: none; }
-
-    .model-info { flex: 1; }
-
-    .model-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--white);
-      font-family: var(--font-mono);
-    }
-
-    .model-meta {
-      font-size: 11px;
-      color: var(--white-dim);
-      margin-top: 2px;
-    }
-
-    .model-size {
-      font-size: 11px;
-      color: var(--white-dim);
-      font-family: var(--font-mono);
-      margin: 0 16px;
-    }
-
-    .model-btn {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 5px 12px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-family: var(--font-body);
-    }
-
-    .model-btn.download {
-      background: var(--blue);
-      color: #fff;
-    }
-
-    .model-btn.installed {
-      background: rgba(16,185,129,0.15);
-      color: var(--green);
-      border: 1px solid rgba(16,185,129,0.3);
-    }
-
-    /* ── Knowledge packs ─────────────────────────────────────────── */
-    .packs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 16px;
-      margin-top: 48px;
-    }
-
-    .pack-card {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px 20px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .pack-card:hover {
-      border-color: rgba(30,136,229,0.4);
-      transform: translateY(-2px);
-    }
-
-    .pack-emoji { font-size: 28px; margin-bottom: 12px; }
-
-    .pack-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 4px;
-    }
-
-    .pack-agent {
-      font-size: 12px;
-      color: var(--white-dim);
-    }
-
-    .pack-tag {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 3px;
-    }
-
-    /* ── Privacy section ─────────────────────────────────────────── */
-    .privacy { background: var(--navy-mid); }
-
-    .privacy-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    @media (max-width: 720px) {
-      .privacy-layout { grid-template-columns: 1fr; gap: 48px; }
-    }
-
-    .privacy-copy h2 {
-      font-family: var(--font-display);
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: normal;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
-      color: var(--white);
-      margin-bottom: 20px;
-    }
-
-    .privacy-copy p {
-      font-size: 16px;
-      color: var(--white-dim);
-      line-height: 1.65;
-      margin-bottom: 16px;
-    }
-
-    .privacy-list {
-      list-style: none;
-      margin-top: 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .privacy-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 15px;
-      color: var(--white-dim);
-    }
-
-    .privacy-list li::before {
-      content: '✓';
-      color: var(--green);
-      font-weight: 700;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    /* Drive visual */
-    .drive-visual {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .drive-card {
-      background: var(--navy-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .drive-card-icon {
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .drive-card-text { flex: 1; }
-
-    .drive-card-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--white);
-    }
-
-    .drive-card-sub {
-      font-size: 11px;
-      color: var(--white-dim);
-      margin-top: 2px;
-      font-family: var(--font-mono);
-    }
-
-    .drive-card-size {
-      font-size: 11px;
-      color: var(--white-dim);
-      font-family: var(--font-mono);
-    }
-
-    /* ── CTA section ─────────────────────────────────────────────── */
-    .cta-section {
-      text-align: center;
-      padding: clamp(80px, 10vw, 140px) 0;
-    }
-
-    .cta-section h2 {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: normal;
-      letter-spacing: -0.03em;
-      color: var(--white);
-      margin-bottom: 16px;
-      line-height: 1.1;
-    }
-
-    .cta-section p {
-      font-size: 18px;
-      color: var(--white-dim);
-      margin-bottom: 48px;
-    }
-
-    .cta-form {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-
-    .cta-form input[type="email"] {
-      flex: 1;
-      min-width: 200px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 14px 18px;
-      color: var(--white);
-      font-size: 16px;
-      font-family: var(--font-body);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .cta-form input[type="email"]::placeholder { color: var(--white-dim); }
-    .cta-form input[type="email"]:focus { border-color: var(--blue); }
-
-    .cta-form button {
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      padding: 14px 28px;
-      font-size: 16px;
-      font-weight: 700;
-      font-family: var(--font-body);
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .cta-form button:hover { background: var(--blue-dim); }
-
-    /* ── Footer ──────────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 36px 0;
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-logo {
-      font-family: var(--font-display);
-      font-size: 16px;
-      color: var(--white-dim);
-    }
-
-    .footer-logo span { color: var(--blue); }
-
-    .footer-copy {
-      font-size: 13px;
-      color: var(--white-dim);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-    }
-
-    .footer-links a {
-      font-size: 13px;
-      color: var(--white-dim);
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover { color: var(--white); text-decoration: none; }
-
-    /* ── Success state ───────────────────────────────────────────── */
-    .success-msg {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      color: var(--green);
-      margin-top: 12px;
-    }
-
+      background: transparent; color: var(--white-dim);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 12px 22px; font-size: 15px; font-weight: 600;
+      font-family: var(--font-sans); cursor: pointer; transition: all 0.2s;
+    }
+    .email-form button:hover { border-color: var(--blue); color: var(--white); }
+    .form-note { margin-top: 10px; font-size: 13px; color: var(--white-dim); }
+    .success-msg { display: none; align-items: center; gap: 8px; font-size: 15px; color: var(--green); margin-top: 10px; }
     .success-msg.show { display: flex; }
 
-    /* ── Responsive ──────────────────────────────────────────────── */
-    @media (max-width: 600px) {
-      .pillar:first-child { border-radius: 8px 8px 0 0; }
-      .pillar:last-child  { border-radius: 0 0 8px 8px; }
-      .pillars-grid { gap: 2px; grid-template-columns: 1fr; }
-      .demo-strip { gap: 8px; }
+    .proof-bar {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 20px; margin-top: 44px;
+    }
+    .proof-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green); box-shadow: 0 0 8px var(--green);
+      flex-shrink: 0; animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .proof-text { font-size: 14px; color: var(--white-dim); }
+    .proof-text strong { color: var(--white); }
+
+    /* ── Section headers ── */
+    .section-head { text-align: center; max-width: 640px; margin: 0 auto 68px; }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: var(--font-serif); font-size: clamp(26px, 3.8vw, 42px);
+      font-weight: normal; letter-spacing: -0.025em;
+      line-height: 1.15; color: var(--white); margin-bottom: 14px;
+    }
+    .section-sub { font-size: 17px; color: var(--white-dim); line-height: 1.6; }
+
+    /* ══ TIERS ══ */
+    .tiers { background: var(--navy-mid); }
+    .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 780px) { .tiers-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } }
+
+    .tier-card {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 36px 28px;
+      display: flex; flex-direction: column; position: relative; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .tier-card:hover { transform: translateY(-3px); }
+    .tier-card.featured { border-color: var(--blue); background: linear-gradient(160deg, var(--navy-card) 60%, rgba(30,136,229,0.08) 100%); }
+    .tier-card.drive-tier { border-color: var(--amber); background: linear-gradient(160deg, var(--navy-card) 60%, rgba(245,158,11,0.07) 100%); }
+
+    .tier-badge {
+      position: absolute; top: 0; right: 0;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 5px 12px; border-radius: 0 9px 0 8px;
+    }
+    .tier-badge.popular { background: var(--blue); color: #fff; }
+    .tier-badge.hardware { background: var(--amber); color: var(--navy); }
+
+    .tier-icon { font-size: 28px; margin-bottom: 16px; }
+    .tier-name { font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-dim); margin-bottom: 8px; }
+    .tier-headline { font-family: var(--font-serif); font-size: 22px; font-weight: normal; letter-spacing: -0.02em; color: var(--white); margin-bottom: 6px; line-height: 1.2; }
+    .tier-sub { font-size: 13px; color: var(--white-dim); margin-bottom: 24px; line-height: 1.5; }
+    .tier-divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    .tier-features { list-style: none; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .tier-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--white-dim); line-height: 1.5; }
+    .tier-features li .check { flex-shrink: 0; margin-top: 1px; }
+    .tier-features li.on .check { color: var(--green); }
+    .tier-features li.off .check { color: rgba(255,255,255,0.15); }
+    .tier-features li.off { color: rgba(120,153,184,0.45); }
+
+    .tier-cta {
+      display: block; width: 100%; text-align: center; margin-top: 28px; padding: 12px;
+      border-radius: 6px; font-size: 15px; font-weight: 700; font-family: var(--font-sans);
+      text-decoration: none; transition: all 0.2s; cursor: pointer; border: none;
+    }
+    .tier-cta.outline { background: transparent; color: var(--white-dim); border: 1px solid var(--border); }
+    .tier-cta.outline:hover { border-color: var(--blue); color: var(--white); }
+    .tier-cta.solid { background: var(--blue); color: #fff; }
+    .tier-cta.solid:hover { background: var(--blue-dim); }
+    .tier-cta.gold { background: var(--amber); color: var(--navy); }
+    .tier-cta.gold:hover { background: #D97706; }
+
+    /* ══ LIVING KNOWLEDGE ══ */
+    .living { background: var(--navy); }
+
+    .living-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    @media (max-width: 720px) { .living-layout { grid-template-columns: 1fr; gap: 48px; } }
+
+    .living-copy h2 {
+      font-family: var(--font-serif); font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: normal; letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--white); margin-bottom: 20px;
+    }
+    .living-copy p { font-size: 16px; color: var(--white-dim); line-height: 1.65; margin-bottom: 16px; }
+    .living-copy p:last-of-type { margin-bottom: 0; }
+    .living-copy strong { color: var(--white); }
+
+    /* The differentiator callout */
+    .differentiator {
+      margin-top: 28px; padding: 20px 24px;
+      background: linear-gradient(135deg, rgba(6,182,212,0.08), rgba(139,92,246,0.08));
+      border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 8px;
+    }
+    .differentiator p {
+      font-size: 16px; color: var(--white); font-style: italic;
+      line-height: 1.55; margin-bottom: 0 !important;
+    }
+    .differentiator p strong { color: var(--teal); font-style: normal; }
+
+    /* Architecture diagram with feedback loop */
+    .arch-diagram { display: flex; flex-direction: column; gap: 0; }
+    .arch-diagram-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--white-dim); margin-bottom: 12px;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
+    .arch-row {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 13px 16px;
+      display: flex; align-items: center; gap: 10px;
+      position: relative;
     }
+    .arch-row.highlight-purple { border-color: rgba(139,92,246,0.4); background: linear-gradient(90deg, var(--navy-card), rgba(139,92,246,0.07)); }
+    .arch-row.highlight-teal   { border-color: rgba(6,182,212,0.4);   background: linear-gradient(90deg, var(--navy-card), rgba(6,182,212,0.07)); }
+    .arch-row.highlight-green  { border-color: rgba(16,185,129,0.4);  background: linear-gradient(90deg, var(--navy-card), rgba(16,185,129,0.07)); }
+
+    .arch-icon { font-size: 17px; flex-shrink: 0; }
+    .arch-text { flex: 1; }
+    .arch-label { font-size: 13px; font-weight: 600; color: var(--white); }
+    .arch-sub { font-size: 10px; color: var(--white-dim); margin-top: 2px; font-family: var(--font-mono); }
+
+    .arch-badge {
+      font-size: 9px; font-weight: 700; padding: 3px 7px;
+      border-radius: 3px; white-space: nowrap; flex-shrink: 0;
+    }
+    .arch-badge.local    { background: var(--green-pale);  color: var(--green); }
+    .arch-badge.opt      { background: var(--blue-pale);   color: var(--blue); }
+    .arch-badge.mcp      { background: var(--purple-pale); color: var(--purple); }
+    .arch-badge.grows    { background: var(--teal-pale);   color: var(--teal); }
+
+    /* Connector lines */
+    .arch-connector {
+      display: flex; align-items: center; padding: 2px 16px;
+      font-size: 10px; color: var(--white-dim); font-family: var(--font-mono);
+      gap: 6px; position: relative;
+    }
+    .arch-connector::before { content: '↓'; color: var(--border); font-size: 14px; }
+
+    /* The feedback loop — write-back arrow */
+    .arch-writeback-wrap {
+      display: grid; grid-template-columns: 1fr auto; gap: 0; align-items: stretch;
+    }
+    .arch-writeback-col { display: flex; flex-direction: column; gap: 0; }
+    .arch-feedback {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0 8px; gap: 4px;
+    }
+    .arch-feedback-line {
+      width: 2px; flex: 1; background: linear-gradient(to bottom, var(--teal), var(--purple));
+      min-height: 20px; border-radius: 1px;
+    }
+    .arch-feedback-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--teal); writing-mode: vertical-lr; transform: rotate(180deg);
+      white-space: nowrap; padding: 4px 0;
+    }
+    .arch-feedback-arrow { font-size: 12px; color: var(--teal); }
+
+    /* Pack cards */
+    .pack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; margin-top: 48px; }
+    .pack-card {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px 16px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pack-card:hover { border-color: rgba(30,136,229,0.4); transform: translateY(-2px); }
+    .pack-card.has-tools { border-color: rgba(6,182,212,0.3); }
+    .pack-emoji { font-size: 26px; margin-bottom: 10px; }
+    .pack-name { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .pack-agent { font-size: 11px; color: var(--white-dim); }
+    .pack-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .pack-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; padding: 2px 6px; border-radius: 3px;
+    }
+    .pack-tag.offline { background: var(--green-pale); color: var(--green); }
+    .pack-tag.living  { background: var(--teal-pale);  color: var(--teal); }
+    .pack-tag.coming  { background: rgba(255,255,255,0.06); color: var(--white-dim); }
+
+    /* ══ MODEL LIBRARY ══ */
+    .models-section { background: var(--navy-mid); }
+    .os-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 720px) { .os-layout { grid-template-columns: 1fr; gap: 48px; } }
+
+    .os-copy h2 {
+      font-family: var(--font-serif); font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: normal; letter-spacing: -0.025em; line-height: 1.15;
+      color: var(--white); margin-bottom: 20px;
+    }
+    .os-copy p { font-size: 16px; color: var(--white-dim); line-height: 1.65; margin-bottom: 14px; }
+    .os-copy p:last-child { margin-bottom: 0; }
+    .os-copy .hl { color: var(--white); font-weight: 600; }
+
+    .model-browser { background: var(--navy-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .browser-bar { background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border); padding: 11px 16px; display: flex; align-items: center; gap: 10px; }
+    .browser-dots { display: flex; gap: 5px; }
+    .browser-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+    .browser-title { font-size: 12px; color: var(--white-dim); font-family: var(--font-mono); }
+    .browser-body { padding: 16px 20px; }
+    .search-bar { background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 6px; padding: 9px 14px; font-size: 12px; color: var(--white-dim); font-family: var(--font-mono); margin-bottom: 14px; }
+    .model-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .model-row:last-child { border-bottom: none; }
+    .model-info { flex: 1; }
+    .model-name-text { font-size: 12px; font-weight: 600; color: var(--white); font-family: var(--font-mono); }
+    .model-meta { font-size: 10px; color: var(--white-dim); margin-top: 2px; }
+    .model-size { font-size: 10px; color: var(--white-dim); font-family: var(--font-mono); margin: 0 14px; }
+    .mbtn { font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 3px; border: none; cursor: pointer; font-family: var(--font-sans); }
+    .mbtn.dl { background: var(--blue); color: #fff; }
+    .mbtn.ok { background: var(--green-pale); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+    .mbtn.lock { background: var(--amber-pale); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); font-size: 9px; }
+
+    /* ══ PRIVACY ══ */
+    .privacy { background: var(--navy); }
+    .privacy-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    @media (max-width: 720px) { .privacy-layout { grid-template-columns: 1fr; gap: 48px; } }
+    .privacy-copy h2 { font-family: var(--font-serif); font-size: clamp(26px, 3.5vw, 38px); font-weight: normal; letter-spacing: -0.025em; line-height: 1.15; color: var(--white); margin-bottom: 20px; }
+    .privacy-copy p { font-size: 16px; color: var(--white-dim); line-height: 1.65; margin-bottom: 14px; }
+    .privacy-list { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+    .privacy-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--white-dim); }
+    .privacy-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    .data-flow { display: flex; flex-direction: column; gap: 8px; }
+    .flow-label-head { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white-dim); margin-bottom: 4px; }
+    .flow-row { display: flex; align-items: center; gap: 12px; background: var(--navy-card); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; }
+    .flow-icon { font-size: 17px; flex-shrink: 0; }
+    .flow-text { flex: 1; }
+    .flow-label { font-size: 13px; font-weight: 600; color: var(--white); }
+    .flow-sub { font-size: 10px; color: var(--white-dim); margin-top: 2px; font-family: var(--font-mono); }
+    .flow-badge { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 3px; white-space: nowrap; }
+    .flow-badge.local   { background: var(--green-pale); color: var(--green); }
+    .flow-badge.opt     { background: var(--blue-pale);  color: var(--blue); }
+    .flow-badge.blocked { background: rgba(239,68,68,0.12); color: #F87171; }
+
+    /* ══ CTA ══ */
+    .cta-section { text-align: center; padding: clamp(80px, 10vw, 140px) 0; background: var(--navy-mid); }
+    .cta-section h2 { font-family: var(--font-serif); font-size: clamp(32px, 5vw, 54px); font-weight: normal; letter-spacing: -0.03em; color: var(--white); margin-bottom: 14px; line-height: 1.1; }
+    .cta-section p { font-size: 18px; color: var(--white-dim); margin-bottom: 44px; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+    .cta-tf { display: inline-flex; align-items: center; gap: 10px; background: var(--blue); color: #fff; padding: 14px 28px; border-radius: 6px; font-size: 16px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+    .cta-tf:hover { background: var(--blue-dim); }
+    .cta-drive { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: var(--amber); border: 1px solid rgba(245,158,11,0.4); padding: 14px 28px; border-radius: 6px; font-size: 16px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
+    .cta-drive:hover { background: var(--amber-pale); border-color: var(--amber); }
+    .cta-or { font-size: 13px; color: var(--white-dim); margin-bottom: 16px; }
+    .cta-form { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; max-width: 440px; margin: 0 auto; }
+    .cta-form input[type="email"] { flex: 1; min-width: 200px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 4px; padding: 13px 18px; color: var(--white); font-size: 15px; font-family: var(--font-sans); outline: none; transition: border-color 0.2s; }
+    .cta-form input[type="email"]::placeholder { color: var(--white-dim); }
+    .cta-form input[type="email"]:focus { border-color: var(--blue); }
+    .cta-form button { background: transparent; color: var(--white-dim); border: 1px solid var(--border); border-radius: 4px; padding: 13px 22px; font-size: 15px; font-weight: 600; font-family: var(--font-sans); cursor: pointer; transition: all 0.2s; }
+    .cta-form button:hover { border-color: var(--blue); color: var(--white); }
+
+    footer { border-top: 1px solid var(--border); padding: 32px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: var(--font-serif); font-size: 15px; color: var(--white-dim); }
+    .footer-logo em { font-style: normal; color: var(--blue); }
+    .footer-copy { font-size: 13px; color: var(--white-dim); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 13px; color: var(--white-dim); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
 
-<!-- ── Nav ───────────────────────────────────────────────────────── -->
+<!-- ── Nav ── -->
 <nav>
   <div class="nav-inner">
-    <div class="nav-logo"><span>Capped</span>AI</div>
-    <a href="#early-access" class="nav-cta">Get Early Access</a>
+    <div class="nav-logo"><em>Capped</em>AI</div>
+    <div class="nav-right">
+      <a href="#packs" class="nav-link">Packs</a>
+      <a href="#models" class="nav-link">Models</a>
+      <a href="#early-access" class="nav-cta">Join the List</a>
+    </div>
   </div>
 </nav>
 
-<!-- ── Hero ──────────────────────────────────────────────────────── -->
+<!-- ── Hero ── -->
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-eyebrow">Launching Soon</div>
+      <div class="eyebrow">Coming Soon</div>
 
-      <h1>Your AI.<br>On a <em>drive.</em><br>Owned by you.</h1>
+      <h1>Private AI.<br>No cloud.<br><em>Your choice.</em></h1>
 
       <p class="hero-sub">
-        CappedAI is a portable AI platform that lives on a USB drive.
-        Plug it in, open the app, and a fully private AI assistant is ready —
-        with no internet, no cloud account, and no subscription.
-        Your models, your knowledge, your data. All on the drive.
+        CappedAI runs open-source AI privately on your phone or drive —
+        no internet required, no subscription, no server that sees your data.
+      </p>
+      <p class="hero-sub-2">
+        <strong>Free app to start.</strong> Expand with knowledge packs
+        that accumulate live data into permanent local knowledge.
+        Or get a drive shipped pre-loaded and ready to go.
       </p>
 
-      <form class="email-form" id="hero-form" onsubmit="handleSubmit(event, 'hero')">
-        <input type="email" placeholder="your@email.com" required autocomplete="email">
-        <button type="submit">Get Early Access</button>
-      </form>
-      <p class="form-note">No spam. Just a note when we launch.</p>
-      <div class="success-msg" id="hero-success">
-        ✓ You're on the list. We'll be in touch.
+      <div class="testflight-row">
+        <div class="coming-soon-btn">
+          <span>🧪</span>
+          <span>iOS App</span>
+          <span class="cs-badge">Coming Soon</span>
+        </div>
+        <a href="#early-access" class="drive-btn">💾 Get notified when drives ship</a>
       </div>
 
-      <div class="demo-strip">
-        <span class="demo-label">How it works</span>
-        <div class="demo-step">
-          <span class="icon">🔌</span>
-          Plug in
-        </div>
-        <span class="demo-arrow">→</span>
-        <div class="demo-step">
-          <span class="icon">✦</span>
-          Open app
-        </div>
-        <span class="demo-arrow">→</span>
-        <div class="demo-step">
-          <span class="icon">💬</span>
-          Ask anything
-        </div>
-        <span class="demo-arrow">→</span>
-        <div class="demo-step">
-          <span class="icon">✈️</span>
-          Works offline
-        </div>
-      </div>
+      <form class="email-form" id="hero-form" onsubmit="handleSubmit(event,'hero')">
+        <input type="email" placeholder="or enter email for updates" autocomplete="email">
+        <button type="submit">Notify me</button>
+      </form>
+      <div class="success-msg" id="hero-success">✓ You're on the list.</div>
 
       <div class="proof-bar">
         <div class="proof-dot"></div>
-        <div class="proof-text">
-          <strong>Airplane mode. WiFi off. Ethernet unplugged.</strong>
-          CappedAI responds.
-        </div>
+        <div class="proof-text"><strong>Airplane mode on. WiFi off.</strong> CappedAI still responds.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ── Three Pillars ──────────────────────────────────────────────── -->
-<section class="pillars">
+<!-- ── Tiers ── -->
+<section class="tiers" id="tiers">
   <div class="container">
-    <div class="pillars-grid">
-
-      <div class="pillar">
-        <div class="pillar-num">1</div>
-        <div class="pillar-icon">🔒</div>
-        <h3>Private by design</h3>
-        <p>Everything you type, every response, every image generated —
-        stays on the drive. No server ever sees it. Not ours.
-        Not anyone's.</p>
-        <span class="pillar-tag">Zero cloud contact</span>
-      </div>
-
-      <div class="pillar">
-        <div class="pillar-num">2</div>
-        <div class="pillar-icon">🧠</div>
-        <h3>Your model library</h3>
-        <p>Browse and download models directly from HuggingFace
-        inside the app. Chat models, image generators, embedding models —
-        stored on your drive, yours permanently.</p>
-        <span class="pillar-tag">HuggingFace integrated</span>
-      </div>
-
-      <div class="pillar">
-        <div class="pillar-num">3</div>
-        <div class="pillar-icon">📦</div>
-        <h3>Expand with packs</h3>
-        <p>Knowledge packs add domain expertise to your AI —
-        travel guides, local information, specialist knowledge.
-        Combine multiple packs in a single conversation.</p>
-        <span class="pillar-tag">Knowledge packs</span>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ── Features ───────────────────────────────────────────────────── -->
-<section>
-  <div class="container">
-    <div class="features-header">
-      <div class="section-eyebrow">What's included</div>
-      <h2 class="section-title">Everything runs on the drive</h2>
-      <p class="section-sub">
-        No installation on your computer. No configuration.
-        Plug in, launch, and a complete AI environment is ready.
-      </p>
+    <div class="section-head">
+      <div class="section-eyebrow">Three ways in</div>
+      <h2 class="section-title">Start free. Go deeper when you're ready.</h2>
+      <p class="section-sub">The open-source models are free. CappedAI gives you a private, offline way to run them — on whatever hardware you already have.</p>
     </div>
 
-    <div class="features-list">
+    <div class="tiers-grid">
 
-      <div class="feature-card">
-        <div class="feature-icon">💬</div>
-        <h4>AI chat assistant</h4>
-        <p>Full conversation history stored on your drive.
-        Streaming responses, markdown rendering, code highlighting.
-        Works on Mac, iPhone, and Windows.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🖼️</div>
-        <h4>Text-to-image generation</h4>
-        <p>Generate images offline using local image models.
-        At an airport, in a hospital, anywhere.
-        Generated images save to your drive.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📄</div>
-        <h4>Document intelligence</h4>
-        <p>Drop in a PDF, CSV, or text file and ask questions
-        about it. Your documents never leave the device.
-        Ideal for sensitive material.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <h4>Cross-pack knowledge</h4>
-        <p>Activate multiple knowledge packs at once and ask
-        questions that draw on all of them simultaneously.
-        Your AI, with multiple areas of expertise.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🔄</div>
-        <h4>Trade-in program</h4>
-        <p>As AI models improve, trade in your drive for a
-        newer edition at a discount. Never get left behind,
-        never lose what's on your drive.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📱</div>
-        <h4>iPhone native</h4>
-        <p>The CappedAI iOS app connects directly to your
-        drive. Metal GPU acceleration means fast inference
-        on your phone, all offline.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ── Model Library ──────────────────────────────────────────────── -->
-<section class="model-section">
-  <div class="container">
-    <div class="model-layout">
-
-      <div class="model-copy">
-        <div class="section-eyebrow">Model library</div>
-        <h2>Stream music or own it.<br>You should own your AI.</h2>
-        <p>
-          CappedAI connects to HuggingFace's model catalog directly
-          inside the app. Browse thousands of open-weight models,
-          download what you want, and they live on your drive — not
-          on a server you pay monthly to access.
-        </p>
-        <p>
-          A 128 GB drive holds 15–20 models comfortably. A 256 GB
-          drive is a serious model library. When a better model
-          ships, download it. The old one stays until you choose
-          to remove it.
-        </p>
-        <p>
-          No API key. No per-token billing. No usage caps.
-          You own the weights.
-        </p>
-      </div>
-
-      <!-- Model browser mockup -->
-      <div class="model-browser">
-        <div class="browser-bar">
-          <div class="browser-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="browser-title">CappedAI — Model Library</div>
-        </div>
-        <div class="browser-body">
-          <div class="search-bar">
-            🔍 &nbsp;Search HuggingFace models...
-          </div>
-
-          <div class="model-row">
-            <div class="model-info">
-              <div class="model-name">Llama-3.2-3B-Instruct</div>
-              <div class="model-meta">Meta · Chat · Q4_K_M</div>
-            </div>
-            <div class="model-size">2.0 GB</div>
-            <button class="model-btn installed">Installed</button>
-          </div>
-
-          <div class="model-row">
-            <div class="model-info">
-              <div class="model-name">Qwen3-8B-Instruct</div>
-              <div class="model-meta">Alibaba · Chat · Q4_K_M</div>
-            </div>
-            <div class="model-size">5.2 GB</div>
-            <button class="model-btn download">Download</button>
-          </div>
-
-          <div class="model-row">
-            <div class="model-info">
-              <div class="model-name">FLUX.1-schnell</div>
-              <div class="model-meta">Black Forest Labs · Image · Q8</div>
-            </div>
-            <div class="model-size">11.9 GB</div>
-            <button class="model-btn download">Download</button>
-          </div>
-
-          <div class="model-row">
-            <div class="model-info">
-              <div class="model-name">Phi-4-mini-instruct</div>
-              <div class="model-meta">Microsoft · Chat · Q4_K_M</div>
-            </div>
-            <div class="model-size">2.5 GB</div>
-            <button class="model-btn installed">Installed</button>
-          </div>
-
-          <div class="model-row">
-            <div class="model-info">
-              <div class="model-name">nomic-embed-text-v1.5</div>
-              <div class="model-meta">Nomic · Embeddings · Q4_0</div>
-            </div>
-            <div class="model-size">270 MB</div>
-            <button class="model-btn installed">Installed</button>
-          </div>
-
+      <div class="tier-card">
+        <div class="tier-icon">📱</div>
+        <div class="tier-name">Free App</div>
+        <div class="tier-headline">Private AI on your phone</div>
+        <div class="tier-sub">Download and go. No credit card, no account, no cloud.</div>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li class="on"><span class="check">✓</span> Private AI chat, fully offline</li>
+          <li class="on"><span class="check">✓</span> Curated starter models included</li>
+          <li class="on"><span class="check">✓</span> Conversation history on device</li>
+          <li class="on"><span class="check">✓</span> iOS — coming soon</li>
+          <li class="off"><span class="check">✗</span> Knowledge packs</li>
+          <li class="off"><span class="check">✗</span> Living knowledge packs</li>
+          <li class="off"><span class="check">✗</span> Full model library</li>
+          <li class="off"><span class="check">✗</span> Text-to-image generation</li>
+        </ul>
+        <div class="tier-cta outline" style="cursor:default;opacity:0.5;">
+          🧪 iOS App — Coming Soon
         </div>
       </div>
 
+      <div class="tier-card featured">
+        <div class="tier-badge popular">Most capable</div>
+        <div class="tier-icon">⚡</div>
+        <div class="tier-name">Pro App</div>
+        <div class="tier-headline">Knowledge packs that learn</div>
+        <div class="tier-sub">Domain expertise that grows smarter every time you're online.</div>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li class="on"><span class="check">✓</span> Everything in Free</li>
+          <li class="on"><span class="check">✓</span> Knowledge packs — travel, local, finance &amp; more</li>
+          <li class="on"><span class="check">✓</span> Living knowledge — live data written to drive</li>
+          <li class="on"><span class="check">✓</span> Combine multiple packs in one chat</li>
+          <li class="on"><span class="check">✓</span> Document intelligence (PDF, CSV, text)</li>
+          <li class="on"><span class="check">✓</span> License keys — no account needed</li>
+          <li class="off"><span class="check">✗</span> Full HuggingFace model library</li>
+          <li class="off"><span class="check">✗</span> Text-to-image generation</li>
+        </ul>
+        <a href="#early-access" class="tier-cta solid">Get early access</a>
+      </div>
+
+      <div class="tier-card drive-tier">
+        <div class="tier-badge hardware">Hardware</div>
+        <div class="tier-icon">💾</div>
+        <div class="tier-name">CappedAI Drive</div>
+        <div class="tier-headline">Everything. Pre-loaded. Shipped to you.</div>
+        <div class="tier-sub">High-speed USB-C drive with models downloaded and ready on arrival.</div>
+        <hr class="tier-divider">
+        <ul class="tier-features">
+          <li class="on"><span class="check">✓</span> Everything in Pro</li>
+          <li class="on"><span class="check">✓</span> High-speed USB-C drive included</li>
+          <li class="on"><span class="check">✓</span> Models pre-downloaded, ready on arrival</li>
+          <li class="on"><span class="check">✓</span> Full HuggingFace model library browser</li>
+          <li class="on"><span class="check">✓</span> Text-to-image generation, offline</li>
+          <li class="on"><span class="check">✓</span> iPhone, iPad &amp; Mac</li>
+          <li class="on"><span class="check">✓</span> Trade-in program — upgrade anytime</li>
+          <li class="on"><span class="check">✓</span> Packs pre-installed</li>
+        </ul>
+        <a href="#early-access" class="tier-cta gold">Reserve a drive</a>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ── Knowledge Packs ────────────────────────────────────────────── -->
-<section>
+<!-- ── Living Knowledge ── -->
+<section class="living" id="packs">
   <div class="container">
-    <div class="features-header">
-      <div class="section-eyebrow">Knowledge packs</div>
-      <h2 class="section-title">Give your AI something to know</h2>
-      <p class="section-sub">
-        Knowledge packs are portable expertise modules that snap into
-        your AI. Each pack has its own agent, its own knowledge base,
-        and its own voice — available offline, stored on the drive.
-      </p>
+    <div class="living-layout">
+
+      <div class="living-copy">
+        <div class="section-eyebrow">Living knowledge packs</div>
+        <h2>Packs that remember<br>what they learn.</h2>
+        <p>
+          Knowledge packs are portable expertise modules — each with its own
+          agent, curated knowledge base, and pre-computed embeddings stored
+          on your drive as a <code style="font-family:var(--font-mono);font-size:13px;background:var(--navy-card);border:1px solid var(--border);padding:2px 6px;border-radius:3px;color:var(--purple)">.cap</code> file.
+        </p>
+        <p>
+          Some packs can fetch live data when you're online — a stock pack
+          pulls real-time quotes, a fantasy football pack gets this week's
+          injury report, a weather pack fetches a current forecast.
+        </p>
+        <p>
+          <strong>But here's what makes CappedAI different:</strong> that live data
+          doesn't disappear when the session ends. It gets embedded and written
+          permanently into the pack's local knowledge base on your drive.
+          The pack remembers what it learned.
+        </p>
+        <p>
+          On your next conversation — online or offline — the agent already
+          knows what it fetched last time. The longer you use a pack,
+          the smarter and more current it becomes.
+        </p>
+
+        <div class="differentiator">
+          <p>Every other AI tool fetches live data and forgets it.<br>
+          <strong>CappedAI packs remember.</strong></p>
+        </div>
+      </div>
+
+      <!-- Architecture diagram with write-back loop -->
+      <div>
+        <div class="arch-diagram-label">How living knowledge works</div>
+
+        <div class="arch-writeback-wrap">
+          <div class="arch-writeback-col">
+
+            <div class="arch-row">
+              <div class="arch-icon">💬</div>
+              <div class="arch-text">
+                <div class="arch-label">Your query</div>
+                <div class="arch-sub">main chat · pack chat · cross-pack</div>
+              </div>
+            </div>
+
+            <div class="arch-connector">RAG retrieval</div>
+
+            <div class="arch-row highlight-green">
+              <div class="arch-icon">🗄️</div>
+              <div class="arch-text">
+                <div class="arch-label">Local knowledge base</div>
+                <div class="arch-sub">SQLite · bge-small embeddings · on drive</div>
+              </div>
+              <div class="arch-badge grows">Grows over time</div>
+            </div>
+
+            <div class="arch-connector">agent decides if live data needed</div>
+
+            <div class="arch-row highlight-purple">
+              <div class="arch-icon">🌐</div>
+              <div class="arch-text">
+                <div class="arch-label">CappedAI data services</div>
+                <div class="arch-sub">quotes · scores · forecasts · custom</div>
+              </div>
+              <div class="arch-badge opt">Online only</div>
+            </div>
+
+            <div class="arch-connector">embed + write back to drive</div>
+
+            <div class="arch-row highlight-teal">
+              <div class="arch-icon">💾</div>
+              <div class="arch-text">
+                <div class="arch-label">Permanent local storage</div>
+                <div class="arch-sub">live data becomes pack knowledge · persists offline</div>
+              </div>
+              <div class="arch-badge grows">Stays forever</div>
+            </div>
+
+            <div class="arch-connector">synthesized response</div>
+
+            <div class="arch-row">
+              <div class="arch-icon">🤖</div>
+              <div class="arch-text">
+                <div class="arch-label">LLM inference</div>
+                <div class="arch-sub">llama.cpp · Metal GPU · fully local</div>
+              </div>
+              <div class="arch-badge local">On device</div>
+            </div>
+
+          </div>
+
+          <!-- Write-back feedback indicator -->
+          <div class="arch-feedback">
+            <div class="arch-feedback-line"></div>
+            <div class="arch-feedback-label">write-back loop</div>
+            <div class="arch-feedback-line"></div>
+            <div class="arch-feedback-arrow">↑</div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
-    <div class="packs-grid">
-
+    <!-- Pack examples -->
+    <div class="pack-grid">
       <div class="pack-card">
         <div class="pack-emoji">🌺</div>
         <div class="pack-name">Hawaiian Vacation</div>
         <div class="pack-agent">Agent: Kai</div>
-        <span class="pack-tag" style="background:rgba(0,137,123,0.15);color:#4DB6AC;">Travel</span>
+        <div class="pack-tags">
+          <span class="pack-tag offline">Offline</span>
+        </div>
       </div>
-
       <div class="pack-card">
         <div class="pack-emoji">🏕️</div>
         <div class="pack-name">Survivalist</div>
         <div class="pack-agent">Agent: Ranger</div>
-        <span class="pack-tag" style="background:rgba(85,139,47,0.15);color:#AED581;">Outdoors</span>
+        <div class="pack-tags">
+          <span class="pack-tag offline">Offline</span>
+        </div>
       </div>
-
       <div class="pack-card">
         <div class="pack-emoji">🤠</div>
         <div class="pack-name">Austin TX Summer</div>
         <div class="pack-agent">Agent: Tex</div>
-        <span class="pack-tag" style="background:rgba(191,87,0,0.15);color:#FFAB40;">Local Guide</span>
+        <div class="pack-tags">
+          <span class="pack-tag offline">Offline</span>
+        </div>
+      </div>
+      <div class="pack-card has-tools">
+        <div class="pack-emoji">📈</div>
+        <div class="pack-name">Stock Research</div>
+        <div class="pack-agent">Agent: coming soon</div>
+        <div class="pack-tags">
+          <span class="pack-tag offline">Offline</span>
+          <span class="pack-tag living">Living</span>
+        </div>
+      </div>
+      <div class="pack-card has-tools">
+        <div class="pack-emoji">🏈</div>
+        <div class="pack-name">Fantasy Football</div>
+        <div class="pack-agent">Agent: coming soon</div>
+        <div class="pack-tags">
+          <span class="pack-tag offline">Offline</span>
+          <span class="pack-tag living">Living</span>
+        </div>
+      </div>
+      <div class="pack-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:130px;">
+        <div style="font-size:22px;margin-bottom:8px;">＋</div>
+        <div class="pack-name" style="color:var(--white-dim);">More coming</div>
+        <div class="pack-agent">legal · weather · travel &amp; more</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Model Library ── -->
+<section class="models-section" id="models">
+  <div class="container">
+    <div class="os-layout">
+
+      <div class="os-copy">
+        <div class="section-eyebrow">Model library</div>
+        <h2>The models are free.<br>Stop paying to access them.</h2>
+        <p>Qwen 3, Llama 4, Phi-4, Mistral — open-source models now match GPT on most real-world tasks. The weights are free. <span class="hl">You've been paying for someone else's server.</span></p>
+        <p>Drive owners browse and download from HuggingFace's full model catalog directly inside the app — chat models, image generators, embedding models. Downloaded to the drive, owned permanently. No API key. No billing relationship. No usage cap.</p>
+        <p>A 128 GB drive holds 15–20 models comfortably. When a better model ships, download it. The old one stays until you choose to remove it.</p>
       </div>
 
-      <div class="pack-card">
-        <div class="pack-emoji">⚖️</div>
-        <div class="pack-name">Prop 1 — Yes</div>
-        <div class="pack-agent">Agent: Yes on 1</div>
-        <span class="pack-tag" style="background:rgba(46,125,50,0.15);color:#81C784;">Civic</span>
-      </div>
-
-      <div class="pack-card">
-        <div class="pack-emoji">🗳️</div>
-        <div class="pack-name">Prop 1 — Against</div>
-        <div class="pack-agent">Agent: No on 1</div>
-        <span class="pack-tag" style="background:rgba(198,40,40,0.15);color:#EF9A9A;">Civic</span>
-      </div>
-
-      <div class="pack-card" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:140px;">
-        <div style="font-size:24px;margin-bottom:8px;">＋</div>
-        <div class="pack-name" style="color:var(--white-dim);">More packs coming</div>
-        <div class="pack-agent">Fantasy sports, finance, legal &amp; more</div>
+      <div class="model-browser">
+        <div class="browser-bar">
+          <div class="browser-dots"><span></span><span></span><span></span></div>
+          <div class="browser-title">CappedAI — Model Library</div>
+        </div>
+        <div class="browser-body">
+          <div class="search-bar">🔍 &nbsp;Search HuggingFace models...</div>
+          <div class="model-row">
+            <div class="model-info"><div class="model-name-text">Llama-3.2-3B-Instruct.Q4_K_M</div><div class="model-meta">Meta · Chat</div></div>
+            <div class="model-size">2.0 GB</div><button class="mbtn ok">Installed</button>
+          </div>
+          <div class="model-row">
+            <div class="model-info"><div class="model-name-text">Qwen3-8B-Instruct.Q4_K_M</div><div class="model-meta">Alibaba · Chat</div></div>
+            <div class="model-size">5.2 GB</div><button class="mbtn dl">Download</button>
+          </div>
+          <div class="model-row">
+            <div class="model-info"><div class="model-name-text">FLUX.1-schnell.Q8</div><div class="model-meta">Black Forest Labs · Image</div></div>
+            <div class="model-size">11.9 GB</div><button class="mbtn dl">Download</button>
+          </div>
+          <div class="model-row">
+            <div class="model-info"><div class="model-name-text">Phi-4-mini-instruct.Q4_K_M</div><div class="model-meta">Microsoft · Chat</div></div>
+            <div class="model-size">2.5 GB</div><button class="mbtn ok">Installed</button>
+          </div>
+          <div class="model-row">
+            <div class="model-info"><div class="model-name-text">nomic-embed-text-v1.5.Q4_0</div><div class="model-meta">Nomic · Embeddings</div></div>
+            <div class="model-size">270 MB</div><button class="mbtn lock">Drive only</button>
+          </div>
+        </div>
       </div>
 
     </div>
   </div>
+
+    <!-- Platform & GPU table -->
+    <div style="margin-top: 72px;">
+      <div class="section-head" style="margin-bottom: 32px;">
+        <div class="section-eyebrow">Platform support</div>
+        <h2 class="section-title">Built for Apple Silicon.</h2>
+        <p class="section-sub">
+          CappedAI uses Apple's Metal GPU framework for hardware-accelerated inference —
+          the same GPU that powers your device handles the AI.
+          No cloud. No external GPU. Just the silicon already in your hand.
+        </p>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table style="width:100%; border-collapse: collapse; font-size: 14px;">
+          <thead>
+            <tr style="background: #0D1B2A; border-bottom: 2px solid rgba(30,136,229,0.3);">
+              <th style="text-align:left; padding: 14px 18px; color: #7A99B8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Platform</th>
+              <th style="text-align:left; padding: 14px 18px; color: #7A99B8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Chip</th>
+              <th style="text-align:left; padding: 14px 18px; color: #7A99B8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">GPU / Inference</th>
+              <th style="text-align:left; padding: 14px 18px; color: #7A99B8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Framework</th>
+              <th style="text-align:left; padding: 14px 18px; color: #7A99B8; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: #112540; border-bottom: 1px solid rgba(30,136,229,0.1);">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #EFF4FA;">iPhone</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">iOS 16+</div>
+              </td>
+              <td style="padding: 14px 18px; color: #EFF4FA;">A16, A17 Pro, A18</td>
+              <td style="padding: 14px 18px;">
+                <div style="color: #EFF4FA;">Apple GPU · 5–6 core</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">Unified memory shared with CPU</div>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(139,92,246,0.15); color: #A78BFA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.06em;">Metal</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(16,185,129,0.12); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">✓ Supported</span>
+              </td>
+            </tr>
+            <tr style="background: #0F2236; border-bottom: 1px solid rgba(30,136,229,0.1);">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #EFF4FA;">iPad</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">iPadOS 16+</div>
+              </td>
+              <td style="padding: 14px 18px; color: #EFF4FA;">M1, M2, M4 · A14+</td>
+              <td style="padding: 14px 18px;">
+                <div style="color: #EFF4FA;">Apple GPU · up to 10 core</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">M-series iPads match MacBook performance</div>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(139,92,246,0.15); color: #A78BFA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.06em;">Metal</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(16,185,129,0.12); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">✓ Supported</span>
+              </td>
+            </tr>
+            <tr style="background: #112540; border-bottom: 1px solid rgba(30,136,229,0.1);">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #EFF4FA;">MacBook Air</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">macOS 13+</div>
+              </td>
+              <td style="padding: 14px 18px; color: #EFF4FA;">M1, M2, M3, M4</td>
+              <td style="padding: 14px 18px;">
+                <div style="color: #EFF4FA;">Apple GPU · 7–10 core</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">Fast enough for 7B–13B models comfortably</div>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(139,92,246,0.15); color: #A78BFA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.06em;">Metal</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(16,185,129,0.12); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">✓ Supported</span>
+              </td>
+            </tr>
+            <tr style="background: #0F2236; border-bottom: 1px solid rgba(30,136,229,0.1);">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #EFF4FA;">MacBook Pro</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">macOS 13+</div>
+              </td>
+              <td style="padding: 14px 18px; color: #EFF4FA;">M1 Pro/Max, M2 Pro/Max, M3 Pro/Max, M4 Pro/Max</td>
+              <td style="padding: 14px 18px;">
+                <div style="color: #EFF4FA;">Apple GPU · up to 40 core</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">70B+ models viable on Max chips</div>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(139,92,246,0.15); color: #A78BFA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.06em;">Metal</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(16,185,129,0.12); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">✓ Supported</span>
+              </td>
+            </tr>
+            <tr style="background: #112540; border-bottom: 1px solid rgba(30,136,229,0.1);">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #EFF4FA;">Mac mini / Mac Studio / iMac</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">macOS 13+</div>
+              </td>
+              <td style="padding: 14px 18px; color: #EFF4FA;">M1–M4 · M2 Ultra / M3 Ultra</td>
+              <td style="padding: 14px 18px;">
+                <div style="color: #EFF4FA;">Apple GPU · up to 76 core</div>
+                <div style="font-size: 12px; color: #7A99B8; margin-top: 2px;">Studio Ultra handles 70B+ at full quality</div>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(139,92,246,0.15); color: #A78BFA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.06em;">Metal</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(16,185,129,0.12); color: #10B981; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">✓ Supported</span>
+              </td>
+            </tr>
+            <tr style="background: #0F2236;">
+              <td style="padding: 14px 18px;">
+                <div style="font-weight: 700; color: #7A99B8;">Windows / Android</div>
+                <div style="font-size: 12px; color: #4A6580; margin-top: 2px;">—</div>
+              </td>
+              <td style="padding: 14px 18px; color: #4A6580;">Various</td>
+              <td style="padding: 14px 18px; color: #4A6580;">No unified GPU framework</td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(255,255,255,0.05); color: #4A6580; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">—</span>
+              </td>
+              <td style="padding: 14px 18px;">
+                <span style="background: rgba(255,255,255,0.05); color: #4A6580; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 3px;">Not planned</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top: 16px; font-size: 13px; color: #7A99B8; text-align: center;">
+        Apple's unified memory architecture means the GPU and CPU share the same memory pool —
+        no data transfer bottleneck. This is why Apple Silicon runs large models faster than
+        discrete GPU setups with the same theoretical FLOPS.
+      </p>
+    </div>
+  </div>
 </section>
 
-<!-- ── Privacy ────────────────────────────────────────────────────── -->
+<!-- ── Privacy ── -->
 <section class="privacy">
   <div class="container">
     <div class="privacy-layout">
 
       <div class="privacy-copy">
         <div class="section-eyebrow">Privacy</div>
-        <h2>The only AI that genuinely can't see your data.</h2>
-        <p>
-          Every other AI product — regardless of what its privacy
-          policy says — processes your queries on a server somewhere.
-          CappedAI processes everything on the drive, on your device.
-          There is no server to breach, no company to subpoena,
-          no policy to change.
-        </p>
+        <h2>Not a policy.<br>A physical reality.</h2>
+        <p>Every other AI tool processes your queries on a server somewhere. Policies change. Servers get breached. Companies get acquired.</p>
+        <p>CappedAI runs entirely on your own hardware. The models and your data live on your phone or drive — never on a server. Inference runs on your device's CPU or GPU. There is nothing in the cloud to breach, subpoena, or shut down.</p>
+        <p>When a pack fetches live data, that's an explicit network call made by the pack — and the result is written to your drive, not to our servers. Your conversation context never leaves your device.</p>
         <ul class="privacy-list">
-          <li>Your conversations never touch a server</li>
-          <li>Generated images stay on the drive</li>
-          <li>Uploaded documents are processed locally</li>
+          <li>Conversations never leave your device</li>
           <li>No account means no data profile</li>
+          <li>License keys validated locally — no phone-home</li>
+          <li>Live data fetched by packs is stored on your drive, not ours</li>
           <li>Works in air-gapped environments</li>
-          <li>No terms of service that change overnight</li>
+          <li>Generated images stay on the drive</li>
         </ul>
       </div>
 
-      <!-- Drive contents visual -->
-      <div class="drive-visual">
-        <div style="font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--white-dim);margin-bottom:8px;">
-          What lives on your drive
-        </div>
+      <div class="data-flow">
+        <div class="flow-label-head">Where your data goes</div>
 
-        <div class="drive-card">
-          <div class="drive-card-icon">🤖</div>
-          <div class="drive-card-text">
-            <div class="drive-card-label">AI models</div>
-            <div class="drive-card-sub">Llama · Qwen · Phi · FLUX</div>
-          </div>
-          <div class="drive-card-size">~24 GB</div>
+        <div class="flow-row">
+          <div class="flow-icon">💬</div>
+          <div class="flow-text"><div class="flow-label">Conversations</div><div class="flow-sub">Stored on device / drive</div></div>
+          <div class="flow-badge local">Local only</div>
         </div>
-
-        <div class="drive-card">
-          <div class="drive-card-icon">📦</div>
-          <div class="drive-card-text">
-            <div class="drive-card-label">Knowledge packs</div>
-            <div class="drive-card-sub">Travel · Local · Civic · Custom</div>
-          </div>
-          <div class="drive-card-size">~2 GB</div>
+        <div class="flow-row">
+          <div class="flow-icon">🤖</div>
+          <div class="flow-text"><div class="flow-label">AI inference</div><div class="flow-sub">llama.cpp · Metal · Apple platforms only</div></div>
+          <div class="flow-badge local">Local only</div>
         </div>
-
-        <div class="drive-card">
-          <div class="drive-card-icon">💬</div>
-          <div class="drive-card-text">
-            <div class="drive-card-label">Your conversations</div>
-            <div class="drive-card-sub">Private. Persistent. Portable.</div>
-          </div>
-          <div class="drive-card-size">~50 MB</div>
+        <div class="flow-row">
+          <div class="flow-icon">📄</div>
+          <div class="flow-text"><div class="flow-label">Documents you upload</div><div class="flow-sub">Indexed locally, never uploaded</div></div>
+          <div class="flow-badge local">Local only</div>
         </div>
-
-        <div class="drive-card">
-          <div class="drive-card-icon">🖼️</div>
-          <div class="drive-card-text">
-            <div class="drive-card-label">Generated images</div>
-            <div class="drive-card-sub">Created offline, saved here</div>
-          </div>
-          <div class="drive-card-size">~500 MB</div>
+        <div class="flow-row">
+          <div class="flow-icon">💾</div>
+          <div class="flow-text"><div class="flow-label">Live data fetched by packs</div><div class="flow-sub">Written to your drive, not our servers</div></div>
+          <div class="flow-badge local">Yours permanently</div>
         </div>
-
-        <div class="drive-card">
-          <div class="drive-card-icon">📄</div>
-          <div class="drive-card-text">
-            <div class="drive-card-label">Your documents</div>
-            <div class="drive-card-sub">Indexed locally, never uploaded</div>
-          </div>
-          <div class="drive-card-size">Yours</div>
+        <div class="flow-row">
+          <div class="flow-icon">🔑</div>
+          <div class="flow-text"><div class="flow-label">License key validation</div><div class="flow-sub">RSA signature · baked-in public key</div></div>
+          <div class="flow-badge local">No server call</div>
         </div>
-
-        <div style="font-size:12px;color:var(--white-dim);margin-top:8px;text-align:center;">
-          128 GB drive · plenty of room to grow
+        <div class="flow-row" style="border:1px solid rgba(239,68,68,0.2);background:rgba(239,68,68,0.04);">
+          <div class="flow-icon">☁️</div>
+          <div class="flow-text"><div class="flow-label">Your queries / context</div><div class="flow-sub">Never sent to any server</div></div>
+          <div class="flow-badge blocked">Never</div>
         </div>
       </div>
 
@@ -1262,34 +978,37 @@
   </div>
 </section>
 
-<!-- ── CTA ────────────────────────────────────────────────────────── -->
+<!-- ── CTA ── -->
 <section class="cta-section" id="early-access">
   <div class="container">
     <h2>Be first to get<br><em style="font-style:normal;color:var(--blue);">CappedAI.</em></h2>
-    <p>Early access list is open. No spam — just a note when we launch.</p>
-    <form class="cta-form" id="cta-form" onsubmit="handleSubmit(event, 'cta')">
-      <input type="email" placeholder="your@email.com" required autocomplete="email">
-      <button type="submit">Join the list</button>
-    </form>
-    <div class="success-msg" id="cta-success" style="justify-content:center;margin-top:16px;">
-      ✓ You're on the list. We'll be in touch.
+    <p>Join the list for launch updates. iOS app and drives coming soon.</p>
+    <div class="cta-buttons">
+      <div class="cta-coming-soon">🧪 iOS App <span class="cs-badge">Coming Soon</span></div>
+      <a href="#early-access" class="cta-drive">💾 Get notified when drives ship</a>
     </div>
-    <p style="margin-top:20px;font-size:13px;color:var(--white-dim);">
-      Built in Austin, TX &nbsp;·&nbsp; CappedAI LLC
-    </p>
+    <p class="cta-or">Leave your email and we'll reach out when the iOS app and drives are ready.<br><span style="font-size:13px;color:var(--white-dim);">Interested in a drive? Just mention it in a reply — we'll be in touch.</span></p>
+    <form class="cta-form" id="cta-form" onsubmit="handleSubmit(event,'cta')">
+      <input type="email" placeholder="your@email.com" autocomplete="email">
+      <button type="submit">Notify me</button>
+    </form>
+    <div class="success-msg" id="cta-success" style="justify-content:center;margin-top:14px;">✓ You're on the list. Talk soon.</div>
+    <p style="margin-top:28px;font-size:13px;color:var(--white-dim);">Built in Austin, TX &nbsp;·&nbsp; CappedAI LLC</p>
   </div>
 </section>
 
-<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<!-- ── Footer ── -->
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-logo"><span>Capped</span>AI LLC</div>
+      <div class="footer-logo"><em>Capped</em>AI LLC</div>
       <div class="footer-links">
-        <a href="mailto:inquiries@cappedai.com">Contact</a>
-        <a href="#early-access">Early access</a>
+        <a href="mailto:hello@cappedai.com">Contact</a>
+        <a href="#packs">Packs</a>
+        <a href="#models">Models</a>
+        <a href="#early-access">Early Access</a>
       </div>
-      <div class="footer-copy">© 2026 CappedAI LLC. All rights reserved.</div>
+      <div class="footer-copy">© 2026 CappedAI LLC</div>
     </div>
   </div>
 </footer>
