@@ -8,7 +8,12 @@
   <meta property="og:title" content="Privacy Policy — CappedAI">
   <meta property="og:description" content="Your conversations never leave your device. No accounts, no tracking, no analytics.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="favicon.svg">
+  <meta property="og:url" content="https://www.cappedai.com/privacy.html">
+  <meta property="og:image" content="https://www.cappedai.com/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://www.cappedai.com/og-image.png">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -48,7 +53,9 @@
       max-width: 1060px; margin: 0 auto; padding: 0 var(--pad);
       height: 58px; display: flex; align-items: center; justify-content: space-between;
     }
-    .nav-logo { font-family: var(--font-serif); font-size: 19px; color: var(--white); letter-spacing: -0.02em; text-decoration: none; }
+    .nav-logo { font-family: var(--font-serif); font-size: 19px; color: var(--white); letter-spacing: -0.02em;
+                text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .nav-logo img { width: 30px; height: 30px; border-radius: 7px; display: block; }
     .nav-logo em { font-style: normal; color: var(--blue); }
     .nav-right { display: flex; align-items: center; gap: 22px; }
     .nav-link { color: var(--white-dim); text-decoration: none; font-size: 14.5px; }
@@ -123,7 +130,9 @@
       display: flex; flex-wrap: wrap; gap: 18px;
       align-items: center; justify-content: space-between;
     }
-    .footer-logo { font-family: var(--font-serif); font-size: 17px; }
+    .footer-logo { font-family: var(--font-serif); font-size: 17px;
+                   display: flex; align-items: center; gap: 9px; }
+    .footer-logo img { width: 24px; height: 24px; border-radius: 6px; display: block; opacity: 0.9; }
     .footer-logo em { font-style: normal; color: var(--blue); }
     .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
     .footer-links a { color: var(--white-dim); text-decoration: none; font-size: 14px; }
@@ -135,7 +144,10 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="/" class="nav-logo"><em>Capped</em>AI</a>
+    <a href="/" class="nav-logo">
+      <img src="logo-64.png" width="30" height="30" alt="CappedAI logo">
+      <span><em>Capped</em>AI</span>
+    </a>
     <div class="nav-right">
       <a href="/#packs" class="nav-link">Packs</a>
       <a href="/#models" class="nav-link">Models</a>
@@ -291,7 +303,10 @@
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-logo"><em>Capped</em>AI LLC</div>
+    <div class="footer-logo">
+      <img src="logo-64.png" width="24" height="24" alt="">
+      <span><em>Capped</em>AI LLC</span>
+    </div>
     <div class="footer-links">
       <a href="mailto:hello@cappedai.com">Contact</a>
       <a href="/#packs">Packs</a>
