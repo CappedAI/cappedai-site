@@ -931,6 +931,8 @@
         <ul class="privacy-list">
           <li>Conversations never leave your device</li>
           <li>No account means no data profile</li>
+          <li>Local AI services are key-protected, re-keyed every launch</li>
+          <li>Connected-account tokens live in your OS keychain, not on the drive</li>
           <li>Drive licensing validated locally — no phone-home</li>
           <li>Live data fetched by packs is stored on your drive, not ours</li>
           <li>Works in air-gapped environments</li>
@@ -965,6 +967,11 @@
           <div class="flow-icon">🔑</div>
           <div class="flow-text"><div class="flow-label">Drive license validation</div><div class="flow-sub">RSA signature · baked-in public key</div></div>
           <div class="flow-badge local">No server call</div>
+        </div>
+        <div class="flow-row">
+          <div class="flow-icon">🛡️</div>
+          <div class="flow-text"><div class="flow-label">Local AI services</div><div class="flow-sub">Bound to 127.0.0.1 · new key each launch</div></div>
+          <div class="flow-badge local">Authenticated</div>
         </div>
         <div class="flow-row" style="border:1px solid rgba(239,68,68,0.2);background:rgba(239,68,68,0.04);">
           <div class="flow-icon">☁️</div>

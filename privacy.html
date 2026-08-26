@@ -221,6 +221,33 @@
       device.</li>
     </ul>
 
+    <h2>How we protect it</h2>
+    <p>Keeping data on your device only helps if what's on the device is
+    actually protected. Concretely:</p>
+    <ul>
+      <li><strong>The AI services run on your machine only.</strong> They're
+      bound to your local loopback address, so they aren't reachable from your
+      network or the internet.</li>
+      <li><strong>They're authenticated with a key that changes every launch.</strong>
+      Without this, a web page you happened to have open could quietly make
+      requests to the AI running on your own machine. It can't.</li>
+      <li><strong>Credentials for any account you connect go in your operating
+      system's keychain</strong> — macOS Keychain, Windows Credential Manager,
+      or the Linux secret service — not into a file on the drive.</li>
+      <li><strong>Everything we download arrives over HTTPS</strong>, and
+      account sign-in uses OAuth with PKCE, so the app never handles your
+      password.</li>
+    </ul>
+    <div class="note">
+      <p><strong>What this doesn't do.</strong> Files on the drive itself —
+      your conversation history, documents, and saved notes — are not encrypted
+      at rest today. Anyone with physical access to an unlocked drive, or
+      software running on your computer under your own user account, can read
+      them. If that's part of your threat model, keep the drive somewhere
+      physically secure and use your operating system's own disk encryption on
+      the computer you plug it into.</p>
+    </div>
+
     <h2>This website</h2>
     <p>If you enter your email address to join the early-access list, that address is sent to us
     through <a href="https://web3forms.com/privacy" rel="noopener">Web3Forms</a>, a third-party
