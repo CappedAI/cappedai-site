@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — CappedAI</title>
+  <meta name="description" content="CappedAI's privacy policy. Your conversations never leave your device. No accounts, no tracking, no analytics, no servers of ours that see your data.">
+  <meta property="og:title" content="Privacy Policy — CappedAI">
+  <meta property="og:description" content="Your conversations never leave your device. No accounts, no tracking, no analytics.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="favicon.svg">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --navy:        #0D1B2A;
+      --navy-mid:    #0F2236;
+      --navy-card:   #112540;
+      --blue:        #1E88E5;
+      --green:       #10B981;
+      --amber:       #F59E0B;
+      --white:       #EFF4FA;
+      --white-dim:   #7A99B8;
+      --border:      rgba(30,136,229,0.16);
+      --max:         760px;
+      --pad:         clamp(20px, 5vw, 56px);
+      --font-serif:  'Georgia', 'Times New Roman', serif;
+      --font-sans:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono:   'SF Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    body {
+      background: var(--navy); color: var(--white);
+      font-family: var(--font-sans); font-size: 17px;
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+
+    .container { max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,27,42,0.94); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto; padding: 0 var(--pad);
+      height: 58px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: var(--font-serif); font-size: 19px; color: var(--white); letter-spacing: -0.02em; text-decoration: none; }
+    .nav-logo em { font-style: normal; color: var(--blue); }
+    .nav-right { display: flex; align-items: center; gap: 22px; }
+    .nav-link { color: var(--white-dim); text-decoration: none; font-size: 14.5px; }
+    .nav-link:hover { color: var(--white); }
+
+    /* ── Page ── */
+    .page { padding: clamp(48px, 7vw, 88px) 0 clamp(64px, 8vw, 104px); }
+
+    .eyebrow {
+      font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 14px;
+    }
+    h1 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(34px, 5.5vw, 46px); line-height: 1.12;
+      letter-spacing: -0.02em; margin-bottom: 16px;
+    }
+    .updated {
+      font-family: var(--font-mono); font-size: 13px;
+      color: var(--white-dim); margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: var(--font-serif); font-weight: 400;
+      font-size: clamp(23px, 3.2vw, 28px); line-height: 1.25;
+      letter-spacing: -0.015em; margin: 48px 0 14px;
+      padding-top: 28px; border-top: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 17px; font-weight: 600; color: var(--white);
+      margin: 26px 0 8px;
+    }
+    p { margin-bottom: 16px; color: #C7D6E6; }
+    a { color: var(--blue); }
+    strong { color: var(--white); font-weight: 600; }
+    code {
+      font-family: var(--font-mono); font-size: 0.88em;
+      background: rgba(30,136,229,0.10); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 5px; color: #9EC5EA;
+    }
+
+    ul { margin: 0 0 18px 0; padding-left: 0; list-style: none; }
+    li {
+      position: relative; padding-left: 26px; margin-bottom: 10px;
+      color: #C7D6E6;
+    }
+    li::before {
+      content: ''; position: absolute; left: 8px; top: 12px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--blue);
+    }
+
+    /* Summary callout */
+    .summary {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: 10px; padding: 24px 26px; margin-bottom: 8px;
+    }
+    .summary p:last-child { margin-bottom: 0; }
+    .summary .lead { color: var(--white); font-size: 18px; }
+
+    .note {
+      background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.22);
+      border-radius: 10px; padding: 18px 22px; margin: 22px 0;
+    }
+    .note p:last-child { margin-bottom: 0; }
+    .note strong { color: var(--amber); }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--border); padding: 40px 0; }
+    .footer-inner {
+      max-width: 1060px; margin: 0 auto; padding: 0 var(--pad);
+      display: flex; flex-wrap: wrap; gap: 18px;
+      align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: var(--font-serif); font-size: 17px; }
+    .footer-logo em { font-style: normal; color: var(--blue); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { color: var(--white-dim); text-decoration: none; font-size: 14px; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { color: var(--white-dim); font-size: 13.5px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><em>Capped</em>AI</a>
+    <div class="nav-right">
+      <a href="/#packs" class="nav-link">Packs</a>
+      <a href="/#models" class="nav-link">Models</a>
+      <a href="/#early-access" class="nav-link">Early Access</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="container">
+
+    <div class="eyebrow">Legal</div>
+    <h1>Privacy Policy</h1>
+    <div class="updated">Last updated: August 26, 2026</div>
+
+    <div class="summary">
+      <p class="lead"><strong>The short version:</strong> your conversations never leave your device.</p>
+      <p>CappedAI runs AI models locally on your own hardware. We don't operate a server that
+      processes your chats, we don't have user accounts, we don't use analytics or tracking, and
+      we don't sell data to anyone. The sections below explain the few times the app does touch
+      the network, and exactly what happens when it does.</p>
+    </div>
+
+    <h2>Who we are</h2>
+    <p>CappedAI LLC, based in Austin, Texas. You can reach us at
+    <a href="mailto:hello@cappedai.com">hello@cappedai.com</a>. This policy covers the CappedAI
+    apps and this website.</p>
+
+    <h2>What stays on your device</h2>
+    <p>All AI processing happens locally, on your device's own processor. Specifically, these
+    never leave your device and are never transmitted to us:</p>
+    <ul>
+      <li>Your prompts, messages, and the AI's responses</li>
+      <li>Your conversation history</li>
+      <li>Documents and files you open or import into the app</li>
+      <li>Notes you save to a knowledge pack's memory</li>
+      <li>Any content generated on device</li>
+    </ul>
+    <p>We have no ability to read any of it. There is no CappedAI server that receives it, because
+    we don't operate a backend at all.</p>
+
+    <h2>When the app uses the network</h2>
+    <p>The app is usable entirely offline. It connects to the internet only for the following,
+    and never to process your conversations.</p>
+
+    <h3>Downloading AI models</h3>
+    <p>The app can download open-weight AI models so it has something to run. It first fetches a
+    small public list of available models we publish on GitHub, then downloads the model file
+    itself directly from <strong>Hugging Face</strong> (<code>huggingface.co</code>), the standard
+    public host for open models. We link to models published there; the download is between your
+    device and Hugging Face.</p>
+
+    <h3>Downloading knowledge packs</h3>
+    <p>Knowledge packs — topic-specific reference material and personas — are downloaded from our
+    public releases on <strong>GitHub</strong>.</p>
+
+    <p>As with any download, the provider serving the file (Hugging Face or GitHub) will see the
+    network request in the ordinary course of delivering it, including your IP address, under
+    their own privacy policies. We don't receive that information. You can also skip downloads
+    entirely and load your own model and pack files from local storage.</p>
+
+    <h3>Connecting your own outside account</h3>
+    <p>Some knowledge packs may offer to connect an account you already have elsewhere, so the
+    assistant can answer questions using your own data from that service — for example, a
+    trading-focused pack reading your own brokerage balances and positions.</p>
+    <div class="note">
+      <p><strong>Not active in the current release.</strong> No knowledge pack we currently publish
+      uses this, so nothing in the app today can start an account connection.</p>
+    </div>
+    <p>When a pack does offer it, this is how it works:</p>
+    <ul>
+      <li><strong>It's optional and off by default.</strong> Nothing connects unless you explicitly
+      choose to connect it, and the app works fully without it.</li>
+      <li><strong>We never see your password.</strong> You sign in on the provider's own page. The
+      app receives only an access token, which is stored in your device's Keychain.</li>
+      <li><strong>Access is read-only.</strong> The app can look up information such as balances,
+      positions, order history, and quotes. It cannot place, modify, or cancel trades, and it
+      cannot move money. This limit is built into the app itself.</li>
+      <li><strong>The data stays on your device.</strong> It travels from the provider directly to
+      your device and is used on device to answer your question. It is never sent to CappedAI or
+      shared with anyone else.</li>
+      <li><strong>You can disconnect at any time</strong>, which removes the stored token from your
+      device.</li>
+    </ul>
+
+    <h2>This website</h2>
+    <p>If you enter your email address to join the early-access list, that address is sent to us
+    through <a href="https://web3forms.com/privacy" rel="noopener">Web3Forms</a>, a third-party
+    form service, and we use it only to contact you about CappedAI. We don't sell or share it. Ask
+    us at any time to remove you from the list and we will.</p>
+    <p>This site runs no analytics, no advertising trackers, and sets no tracking cookies. Our
+    hosting provider keeps standard server logs, as essentially all web hosts do.</p>
+
+    <h2>What we don't do</h2>
+    <ul>
+      <li>No user accounts, and no sign-in to use the app</li>
+      <li>No analytics or telemetry in the app</li>
+      <li>No advertising, ad networks, or ad identifiers</li>
+      <li>No tracking you across apps or websites</li>
+      <li>No selling or renting your information to anyone</li>
+      <li>No training AI models on your conversations</li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>CappedAI isn't directed at children under 13, and we don't knowingly collect personal
+    information from them. Since the app has no accounts and collects no personal information,
+    there's generally nothing for us to collect in the first place.</p>
+
+    <h2>Your rights</h2>
+    <p>Your app data lives on your device and is under your control — you can delete conversations,
+    packs, models, and memory at any time from within the app, and deleting the app removes what
+    remains. Because we hold no account data, there is typically nothing on our side to request or
+    delete. The exception is your email address if you joined the early-access list; write to us
+    and we'll remove it.</p>
+
+    <h2>Changes</h2>
+    <p>If we change this policy, we'll update the date at the top of this page. Material changes to
+    how the app handles your data will also be described in the app's release notes.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy, or about anything above:
+    <a href="mailto:hello@cappedai.com">hello@cappedai.com</a>.</p>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><em>Capped</em>AI LLC</div>
+    <div class="footer-links">
+      <a href="mailto:hello@cappedai.com">Contact</a>
+      <a href="/#packs">Packs</a>
+      <a href="/#models">Models</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 CappedAI LLC</div>
+  </div>
+</footer>
+
+</body>
+</html>
